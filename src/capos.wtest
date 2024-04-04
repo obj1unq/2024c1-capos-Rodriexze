@@ -1,0 +1,35 @@
+import capos.*
+import artefactos.*
+import castillo.*
+
+test "rolando encuentra la espada del destino (la agarra), 
+	rolando encuentra el libro de hechizos (la agarra), rolando encuentra el collar divino (no lo agarra, 
+	ya que tiene la espada y el libro encima y su capacidad es de 2) " {
+	  	rolando.agarrar(espadaDelDestino)
+	  	rolando.agarrar(libroDeHechizos)
+	  	assert.equals(2, rolando.artefactos().size())
+	  	rolando.agarrar(collarDivino)
+	  	assert.equals(2, rolando.artefactos().size())
+}
+
+test "rolando encuentra la espada del destino (la agarra)
+	rolando encuentra el libro de hechizos (la agarra)
+	rolando llega al castillo de piedra (deja en el castillo la espada y el libro de hechizos)
+	rolando encuentra el collar divino (ahora si lo puede agarrar, ya que liberó espacio)
+	rolando llega al castillo de piedra de nuevo(deja el collar, con lo cual ahora el castillo tiene el collar, la espada y el libro)" {
+		rolando.agarrar(espadaDelDestino)
+	  	rolando.agarrar(libroDeHechizos)
+	  	assert.equals(2, rolando.artefactos().size())
+	  	rolando.irAlHogar()
+	  	assert.equals(0, rolando.artefactos().size())
+	  	assert.equals(2, castilloDePiedra.baul().size())
+	  	rolando.agarrar(collarDivino)
+	  	rolando.irAlHogar()
+	  	assert.equals(3, castilloDePiedra.baul().size())
+	  	assert.that(castilloDePiedra.baul().contains(espadaDelDestino))
+	  	assert.that(castilloDePiedra.baul().contains(libroDeHechizos))
+	  	assert.that(castilloDePiedra.baul().contains(collarDivino))
+}
+
+
+//falta el ultimotest hacer
