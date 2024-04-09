@@ -3,9 +3,10 @@ import castillo.*
 
 object rolando {
 	
-	var capacidad = 2
+	var property poderBase = 5
+	var property capacidad = 2
 	const property artefactos = #{}
-	var hogar = castilloDePiedra
+	var property hogar = castilloDePiedra
 	const property historialDeArtefactos = []
 	
 	method agarrar(artefacto){
@@ -36,5 +37,34 @@ object rolando {
 	
 	method todasLasPosesiones() {
 		return artefactos.union(hogar.baul()) //crea una nueva coleccion (SET) con las cosas que tiene encima y en el baul de la casa
+	}
+	
+	method poderPelea() {
+		return self.poderBase() + self.poderArtefactos()
+	}
+	
+	method poderArtefactos() {
+		return artefactos.sum({ artefacto => artefacto.poder(self) })
+	}
+	
+	method batalla() {
+		artefactos.forEach({ artefacto => artefacto.usar() }) //foreach solo para ordenes (mandar un mensaje)
+		poderBase += 1
+	}
+	
+	method enemigosVencibles(tierra) {
+		return tierra.vencibles(self)
+	}
+	
+	method vencibles(enemigo) {
+		return enemigo.poderPelea() < self.poderPelea()
+	}
+	
+	method tieneArmaFatal(enemigo) {
+		return artefactos.any({ artefacto => self.esFatal(artefacto, enemigo)}) //.any() retorna true si alguno de los elementos cumple con la condicion
+	}
+	
+	method esFatal(artefacto, enemigo) {
+		return artefacto.poder(self) > enemigo.poderPelea()
 	}
 }

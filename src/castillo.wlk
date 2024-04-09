@@ -7,5 +7,9 @@ object castilloDePiedra {
 	
 	method guardarArtefactos(artefactos) {
 		baul.addAll(artefactos)
+	}
+	
+	method poderInvocacion(personaje) {
+		return if (not baul.isEmpty() ) baul.max({ artefacto => artefacto.poder(personaje) }).poder(personaje) else 0
 	} 
 }
